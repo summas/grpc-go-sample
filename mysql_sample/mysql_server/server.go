@@ -10,6 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/simplesteph/grpc-go-course/mysql_sample/mysqlpb"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type server struct{}
@@ -47,7 +48,7 @@ func getArticleTitle(category_id string) (err error, title string) {
 	} else {
 		fmt.Println("DB接続成功test")
 	}
-	testTitle := "testTitle"
+	var articleTitle = "testTitle"
 
 	columns, err := rows.Columns() // カラム名を取得
 	if err != nil {
@@ -108,9 +109,10 @@ func getArticleTitle(category_id string) (err error, title string) {
 
 		fmt.Println("mapアウトプット-----------------------------------")
 		fmt.Println("titleテスト:", aritcle["title"])
+		articleTitle = aritcle["title"]
 	}
 
-	return err, testTitle
+	return err, articleTitle
 
 }
 
@@ -118,8 +120,16 @@ func main() {
 	fmt.Println("Hello world Aritcle")
 
 	// dbConnectTest()
+	s := grpc.NewServer() //opts...
+	mysqlpb.RegisterAritcleServiceServer(s, &server{})
+	reflection.Register(s)
 
 	lis, err := net.Listen("tcp", "0.0.0.0:50051")
+
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
 	}
@@ -137,12 +147,12 @@ func main() {
 	// 	opts = append(opts, grpc.Creds(creds))
 	// }
 
-	s := grpc.NewServer() //opts...
-	mysqlpb.RegisterAritcleServiceServer(s, &server{})
+	// s := grpc.NewServer() //opts...
+	// mysqlpb.RegisterAritcleServiceServer(s, &server{})
 
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	// if err := s.Serve(lis); err != nil {
+	// 	log.Fatalf("failed to serve: %v", err)
+	// }
 
 	// _, err := sqlConnect()
 
