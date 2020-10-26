@@ -8,7 +8,8 @@ message Articles {
 }
 
 message ArticlesRequest {
-    Articles category = 1;
+    string category = 1;
+    // Articles category = 1;
 }
 
 message ArticlesResponse {

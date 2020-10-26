@@ -16,7 +16,7 @@ type server struct{}
 
 func (*server) Aritcle(ctx context.Context, req *mysqlpb.ArticlesRequest) (*mysqlpb.ArticlesResponse, error) {
 	fmt.Printf("Aritcle function was invoked with %v\n", req)
-	category := req.GetCategory().GetCategory()
+	category := req.GetCategory()
 	err, title := getArticleTitle(category)
 	if err != nil {
 		panic(err.Error())

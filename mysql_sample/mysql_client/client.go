@@ -47,9 +47,7 @@ func main() {
 func doUnary(c mysqlpb.AritcleServiceClient) {
 	fmt.Println("Starting to do a Unary RPC...")
 	req := &mysqlpb.ArticlesRequest{
-		Category: &mysqlpb.Articles{
-			Category: "45",
-		},
+		Category: "45",
 	}
 	res, err := c.Aritcle(context.Background(), req)
 	if err != nil {
