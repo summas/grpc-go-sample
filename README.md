@@ -1,7 +1,7 @@
 # grpc-go-sample
-goでgRPCの試作を作りました。
+goによるgRPCの試作。
 
-以下のgrpcurl似てmysqlのDBから値が帰ってくることまで動作確認済み。
+以下のgrpcurlコマンドによりmysqlのDBから所得した値が帰ってくることを動作確認済み。
 
 grpcurl -d '{ "category": "32" }' -plaintext localhost:50051 mysql_sample.AritcleService/Aritcle
 
